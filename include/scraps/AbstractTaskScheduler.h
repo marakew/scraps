@@ -38,27 +38,27 @@ public:
     virtual ~AbstractTaskScheduler() = default;
 
     template<class F, class... Args>
-    std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+    std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
     async(F&& f, Args&&... args);
 
     template<class F, class... Args>
-    std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+    std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
     async(const TaskScope& scope, F&& f, Args&&... args);
 
     template<class F, class... Args>
-    std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+    std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
     asyncAfter(const std::chrono::steady_clock::duration& d, F&& f, Args&&... args);
 
     template<class F, class... Args>
-    std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+    std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
     asyncAfter(const TaskScope& scope, const std::chrono::steady_clock::duration& d, F&& f, Args&&... args);
 
     template<class F, class... Args>
-    std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+    std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
     asyncAt(const std::chrono::steady_clock::time_point& t, F&& f, Args&&... args);
 
     template<class F, class... Args>
-    std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+    std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
     asyncAt(const TaskScope& scope, const std::chrono::steady_clock::time_point& t, F&& f, Args&&... args);
 
 protected:
@@ -69,7 +69,7 @@ protected:
 
 private:
     template<class F, class... Args>
-    std::packaged_task<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type()>
+    std::packaged_task<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type()>
     _makePackagedTask(F&& f, Args&&... args);
 
     template<class R, class... Args>
@@ -178,31 +178,31 @@ inline void AbstractTaskScheduler::TaskScopeImpl::reset() {
 }
 
 template<class F, class... Args>
-std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
 AbstractTaskScheduler::async(F&& f, Args&&... args) {
     return asyncAt(std::chrono::steady_clock::now(), std::forward<F>(f), std::forward<Args>(args)...);
 }
 
 template<class F, class... Args>
-std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
 AbstractTaskScheduler::async(const TaskScope& scope, F&& f, Args&&... args) {
     return asyncAt(scope, std::chrono::steady_clock::now(), std::forward<F>(f), std::forward<Args>(args)...);
 }
 
 template<class F, class... Args>
-std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
 AbstractTaskScheduler::asyncAfter(const std::chrono::steady_clock::duration& d, F&& f, Args&&... args) {
     return asyncAt(std::chrono::steady_clock::now() + d, std::forward<F>(f), std::forward<Args>(args)...);
 }
 
 template<class F, class... Args>
-std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
 AbstractTaskScheduler::asyncAfter(const TaskScope& scope, const std::chrono::steady_clock::duration& d, F&& f, Args&&... args) {
     return asyncAt(scope, std::chrono::steady_clock::now() + d, std::forward<F>(f), std::forward<Args>(args)...);
 }
 
 template<class F, class... Args>
-std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
 AbstractTaskScheduler::asyncAt(const std::chrono::steady_clock::time_point& t, F&& f, Args&&... args) {
     auto task = _makePackagedTask(std::forward<F>(f), std::forward<Args>(args)...);
     auto future = task.get_future();
@@ -211,7 +211,7 @@ AbstractTaskScheduler::asyncAt(const std::chrono::steady_clock::time_point& t, F
 }
 
 template<class F, class... Args>
-std::future<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type>
+std::future<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type>
 AbstractTaskScheduler::asyncAt(const TaskScope& scope, const std::chrono::steady_clock::time_point& t, F&& f, Args&&... args) {
     auto task = _makePackagedTask(std::forward<F>(f), std::forward<Args>(args)...);
     auto future = task.get_future();
@@ -223,9 +223,9 @@ AbstractTaskScheduler::asyncAt(const TaskScope& scope, const std::chrono::steady
 }
 
 template<class F, class... Args>
-std::packaged_task<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type()>
+std::packaged_task<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type()>
 AbstractTaskScheduler::_makePackagedTask(F&& f, Args&&... args) {
-    using TaskType = std::packaged_task<typename std::result_of<typename std::decay<F>::type(typename std::decay<Args>::type...)>::type()>;
+    using TaskType = std::packaged_task<typename std::invoke_result<typename std::decay<F>::type,typename std::decay<Args>::type...>::type()>;
     return TaskType(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
 }
 
