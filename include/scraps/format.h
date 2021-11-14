@@ -18,6 +18,7 @@
 #include <scraps/config.h>
 
 #include "fmt/format.h"
+#include "fmt/printf.h"
 #include "fmt/ostream.h"
 
 namespace scraps {
