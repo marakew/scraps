@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 #include <scraps/log/StandardFormatter.h>
+#include <scraps/format.h>
 
 namespace scraps::log {
 
