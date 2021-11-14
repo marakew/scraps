@@ -117,14 +117,14 @@ public:
     *
     * @return true if the wheel is empty
     */
-    bool empty() { return _contents.empty(); }
+    bool empty() const { return _contents.empty(); }
 
     /**
     * Returns the size of the wheel.
     *
     * @return the number of elements in the wheel
     */
-    size_t size() { return _contents.size(); }
+    size_t size() const { return _contents.size(); }
 
 private:
     std::list<T> _contents;
