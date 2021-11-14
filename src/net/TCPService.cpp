@@ -59,11 +59,11 @@ TCPService::~TCPService() {
     wait();
 }
 
-bool TCPService::bind(const std::string& interface, uint16_t port) {
+bool TCPService::bind(const std::string& interface_name, uint16_t port) {
     struct sockaddr_in addr;
     bzero(&addr, sizeof(addr));
     addr.sin_family = AF_INET;
-    if (::inet_pton(addr.sin_family, interface.c_str(), &addr.sin_addr.s_addr) <= 0) {
+    if (::inet_pton(addr.sin_family, interface_name.c_str(), &addr.sin_addr.s_addr) <= 0) {
         SCRAPS_LOG_ERROR("invalid interface");
         return false;
     }

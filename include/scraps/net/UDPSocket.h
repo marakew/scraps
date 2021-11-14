@@ -70,7 +70,7 @@ public:
     /**
     * Binds the socket to the given interface and port.
     */
-    bool bind(const char* interface, uint16_t port);
+    bool bind(const char* interface_name, uint16_t port);
 
     /**
     * Binds the socket, joining the given multicast group address.
@@ -108,7 +108,7 @@ private:
     std::atomic_uint_fast64_t _totalSentBytes{0};
     std::atomic_uint_fast64_t _totalReceivedBytes{0};
 
-    bool _bind(const char* interface, uint16_t port);
+    bool _bind(const char* interface_name, uint16_t port);
 };
 
 } // namespace scraps::net

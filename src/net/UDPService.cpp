@@ -57,13 +57,13 @@ void UDPService::kill() {
     }
 }
 
-std::shared_ptr<UDPSocket> UDPService::openSocket(UDPSocket::Protocol protocol, uint16_t port, std::weak_ptr<UDPReceiver> receiver, const char* interface) {
+std::shared_ptr<UDPSocket> UDPService::openSocket(UDPSocket::Protocol protocol, uint16_t port, std::weak_ptr<UDPReceiver> receiver, const char* interface_name) {
     std::lock_guard<std::mutex> lock(_mutex);
     _purgeDeadSockets();
 
     auto socket = std::make_shared<UDPSocket>(protocol, receiver);
-    if (interface) {
-        if (!socket->bind(interface, port)) {
+    if (interface_name) {
+        if (!socket->bind(interface_name, port)) {
             return nullptr;
         }
     } else if (!socket->bind(port)) {

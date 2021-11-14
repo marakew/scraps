@@ -37,7 +37,7 @@ public:
     *
     * @param interface the interface to open the port on (e.g. "127.0.0.1"). pass nullptr to open on any interface
     */
-    std::shared_ptr<UDPSocket> openSocket(UDPSocket::Protocol protocol, uint16_t port, std::weak_ptr<UDPReceiver> receiver = std::weak_ptr<UDPReceiver>(), const char* interface = nullptr);
+    std::shared_ptr<UDPSocket> openSocket(UDPSocket::Protocol protocol, uint16_t port, std::weak_ptr<UDPReceiver> receiver = std::weak_ptr<UDPReceiver>(), const char* interface_name = nullptr);
 
     /**
     * Opens a socket in the given multicast groupd and returns a UDPSocket object.

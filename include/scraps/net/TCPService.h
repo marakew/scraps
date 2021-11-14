@@ -50,7 +50,7 @@ public:
     *
     * Returns true if successful.
     */
-    bool bind(const std::string& interface, uint16_t port = 0);
+    bool bind(const std::string& interface_name, uint16_t port = 0);
 
     /**
     * Returns the currently bound listening port.

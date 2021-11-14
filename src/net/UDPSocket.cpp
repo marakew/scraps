@@ -55,9 +55,9 @@ bool UDPSocket::bind(uint16_t port) {
     return bind(nullptr, port);
 }
 
-bool UDPSocket::bind(const char* interface, uint16_t port) {
+bool UDPSocket::bind(const char* interface_name, uint16_t port) {
     std::lock_guard<std::mutex> lock(_mutex);
-    return _bind(interface, port);
+    return _bind(interface_name, port);
 }
 
 bool UDPSocket::bindMulticast(const char* groupAddress, uint16_t port) {
@@ -186,7 +186,7 @@ void UDPSocket::close() {
     _totalSentBytes = 0;
 }
 
-bool UDPSocket::_bind(const char* interface, uint16_t port) {
+bool UDPSocket::_bind(const char* interface_name, uint16_t port) {
     addrinfo hints;
     memset(&hints, 0, sizeof(hints));
     addrinfo* result = nullptr;
@@ -197,7 +197,7 @@ bool UDPSocket::_bind(const char* interface, uint16_t port) {
         hints.ai_flags |= AI_PASSIVE;
     }
 
-    if (getaddrinfo(interface, Formatf("%hu", port).c_str(), &hints, &result)) {
+    if (getaddrinfo(interface_name, Formatf("%hu", port).c_str(), &hints, &result)) {
         SCRAPS_LOG_ERROR("error interpreting socket interface");
         return false;
     }
