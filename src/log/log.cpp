@@ -19,6 +19,7 @@
 #include <scraps/log/AndroidLogger.h>
 #include <scraps/log/FileLogger.h>
 #include <scraps/log/NullLogger.h>
+#include <scraps/log/FormattedLoggerNull.h>
 
 namespace scraps::log {
 namespace detail {
@@ -47,7 +48,7 @@ std::shared_ptr<FormattedLogger> CreateFileLogger(
 #elif SCRAPS_ANDROID
     return std::make_shared<AndroidLogger>(std::move(formatter));
 #else
-    return std::make_shared<NullLogger>();
+    return std::make_shared<FormattedLoggerNull>();
 #endif
 }
 
