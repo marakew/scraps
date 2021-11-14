@@ -19,6 +19,7 @@
 
 #include <scraps/Byte.h>
 #include <scraps/Temp.h>
+#include <scraps/ByteArray.h>
 
 #include <gsl.h>
 
@@ -70,6 +71,11 @@ std::string ToHex(const gsl::span<T, BytesDimension...> range) {
 template <typename T, size_t N>
 std::string ToHex(const std::array<T, N>& in) {
     return ToHex(gsl::span<const T, N>{in});
+}
+
+template <size_t N>
+std::string ToHex(const ByteArray<N>& in) {
+    return ToHex(gsl::span<const unsigned char, N>{in.bytes});
 }
 
 /**
