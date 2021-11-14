@@ -130,7 +130,7 @@ void RunLoop::setEventHandler(std::function<void(int fd, short events)> eventHan
 void RunLoop::async(std::function<void()> func, std::chrono::milliseconds delay) {
     {
         std::lock_guard<std::mutex> lock{_mutex};
-        _asyncFunctions.emplace(std::move(func), delay.count() ? std::chrono::steady_clock::now() + delay : std::chrono::steady_clock::time_point::min(), ++_asyncFunctionCounter);
+        _asyncFunctions.emplace(std::move(func), delay.count() ? std::chrono::steady_clock::now() + delay : (std::chrono::steady_clock::time_point::min)(), ++_asyncFunctionCounter);
     }
     _wakeUp();
 }
