@@ -24,7 +24,7 @@ namespace scraps {
 
 #pragma pack(push, 1)
 
-template <int N>
+template <size_t N>
 struct ByteArray {
     bool operator==(const ByteArray& other) const { return !memcmp(bytes, other.bytes, N); }
 
@@ -61,7 +61,7 @@ struct ByteArray {
 
 #pragma pack(pop)
 
-template <int N>
+template <size_t N>
 std::ostream& operator<<(std::ostream& os, const ByteArray<N>& array) {
     os.setf(std::ios::right, std::ios::adjustfield);
     os.fill('0');
@@ -75,7 +75,7 @@ std::ostream& operator<<(std::ostream& os, const ByteArray<N>& array) {
 } // namespace scraps
 
 namespace std {
-template <int N>
+template <size_t N>
 struct hash<scraps::ByteArray<N>> {
     size_t operator()(const scraps::ByteArray<N>& array) const {
         auto data = (unsigned char*)&array;

@@ -52,7 +52,7 @@ constexpr int8_t HexToDec(CharT c) {
  *
  * example: ToHex(std::array<uint8_t, 1>{0xAB}) == "AB";
  */
-template <typename T, std::ptrdiff_t... BytesDimension>
+template <typename T, size_t... BytesDimension>
 std::string ToHex(const gsl::span<T, BytesDimension...> range) {
     std::string ret;
 
