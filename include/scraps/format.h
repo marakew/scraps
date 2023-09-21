@@ -46,7 +46,11 @@ std::string Formatf(const char* format, Args&&... args) {
 template <typename... Args>
 std::string Format(const char* format, Args&&... args) {
     try {
+#if FMT_VERSION >= 80000
+        return ::fmt::format(fmt::runtime(format), std::forward<Args>(args)...);
+#else
         return ::fmt::format(format, std::forward<Args>(args)...);
+#endif
     } catch (...) {
     }
     return format; // this is probably the best we can do if an exception occurs
